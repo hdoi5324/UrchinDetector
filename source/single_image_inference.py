@@ -14,10 +14,10 @@ from datasets.utils_dataset import get_transform
 
 
 def main() -> None:
-    checkpoint_file = "../BenthicSynData/outputs/checkpoints/ckpt_od_urchin_v00_clahe_r50fpn_156_base03/checkpoint.pth"
-    img_path = "../BenthicSynData/outputs/squidle_urchin_2009/PR*LC16.jpg"
+    checkpoint_file = "./outputs/checkpoints/ckpt_od_urchin_v00_clahe_r50fpn_156_base03/checkpoint.pth"
+    img_path = "./outputs/squidle_urchin_detector/PR*LC16.jpg"
     output_dir = "./outputs"
-    device = "cuda"
+    device = "cpu"
     score_threshold = 0.5
 
 
@@ -33,13 +33,14 @@ def main() -> None:
     images = glob(img_path)
     for img_path in images:
         img_filename = os.path.basename(img_path)
-        # Step 3: Apply inference preprocessing transforms
+
+        # Apply inference preprocessing transforms
         img = Image.open(img_path).convert("RGB")
         transform = get_transform(False, opt.train)
         img, target = transform(img, None)
-        # Load image code
         images = list(img.to(device) for img in [img])
-        # Step 4: Use the models and visualize the prediction
+
+        # Use the models and visualize the prediction
         model.eval()
         if torch.cuda.is_available():
             torch.cuda.synchronize()
@@ -47,6 +48,7 @@ def main() -> None:
         outputs = [{k: v.to("cpu") for k, v in t.items()} for t in outputs]
         prediction = outputs[0]
 
+        # Draw prediction on the image and save image
         labels = []
         selected_boxes = []
         boxes = prediction['boxes'].detach().cpu()
@@ -62,9 +64,7 @@ def main() -> None:
             boxes = None
         del prediction, outputs, images
 
-
         img = read_image(img_path).detach()
-        # Prediction boxes
         if boxes is not None:
             # Ground truth boxes
             img = draw_bounding_boxes(img, boxes=boxes,

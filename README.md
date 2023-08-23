@@ -10,13 +10,15 @@ We recommend using [conda](https://www.anaconda.com/distribution/) for installat
 conda create -n detector python=3.10.9
 conda activate detector
 conda install pytorch==1.13.1 torchvision==0.14.1 pytorch-cuda=11.7 -c pytorch -c nvidia
-conda install matplotlib=3.7.0
 conda install easydict hydra-core=1.3.2
-pip install opencv-python==4.7.0.72 Pygments
-```
 
-maybe also 
-```bash
-conda install -c conda-forge  pandas scikit-learn seaborn
-conda install easydict hydra-core=1.3.2 parse pick pycocotools prompt_toolkit
+```
+### Checkpoint file
+
+Copy the checkpoint file to `outputs/checkpoints/ckpt_od_urchin_v00_clahe_r50fpn_156_base03`
+### Execution
+Update the variables at the start of the script to choose different images, score threshold, checkpoint, device etc.
+
+```commandline
+python source/single_image_inference.py
 ```
