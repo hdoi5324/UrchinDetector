@@ -15,7 +15,7 @@ from datasets.utils_dataset import get_transform
 
 def main() -> None:
     checkpoint_file = "./outputs/checkpoints/ckpt_od_urchin_v00_clahe_r50fpn_156_base03/checkpoint.pth"
-    img_path = "./outputs/squidle_urchin_detector/PR*LC16.jpg"
+    img_path = "./outputs/squidle_urchin_2009/PR*LC16.jpg"
     output_dir = "./outputs"
     device = "cpu"
     score_threshold = 0.5
